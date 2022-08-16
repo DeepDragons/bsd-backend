@@ -1,4 +1,3 @@
-import { Buffer } from "buffer";
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 
@@ -12,6 +11,16 @@ export class Block {
       unique: true
     })
     blockHash!: string;
+
+    @CreateDateColumn({
+      nullable: false
+    })
+    createdDate: Date = new Date();
+
+    @UpdateDateColumn({
+      nullable: false
+    })
+    updatedDate: Date = new Date();
 
 
     constructor(blocknumber: number, blockHash: string) {

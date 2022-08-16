@@ -26,8 +26,7 @@ const web3 = new Web3(NODES[1]);
   // }, console.log);
 
   const res = await main.getPastEvents('Transfer', {
-    fromBlock: '19879594',
-    toBlock: '21049860'
+    fromBlock: '19879594'
   });
 
   console.log(JSON.stringify(res, null, 4));

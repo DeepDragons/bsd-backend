@@ -6,7 +6,7 @@ export const AppDataSource = new DataSource({
     database: 'dragons.sqlite3',
     type: 'sqlite',
     synchronize: true,
-    logging: false,
+    logging: true,
     entities: [Token],
     migrations: [],
     subscribers: []

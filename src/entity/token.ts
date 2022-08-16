@@ -1,6 +1,7 @@
 import { Buffer } from "buffer";
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
+
 @Entity()
 export class Token {
 
@@ -32,17 +33,25 @@ export class Token {
     })
     strong!: number;
 
-    @Column()
-    wounds = Buffer.alloc(32).toString('hex');
+    @Column({
+      default: Buffer.alloc(16).toString('hex')
+    })
+    wounds: string = Buffer.alloc(16).toString('hex');
 
-    @Column()
-    won = 0;
+    @Column({
+      default: 0
+    })
+    won: number = 0;
 
-    @Column()
-    lost = 0;
+    @Column({
+      default: 0
+    })
+    lost: number = 0;
 
-    @Column()
-    burnt = false;
+    @Column({
+      default: false
+    })
+    burnt: boolean = false;
 
     @Column({
       nullable: true

@@ -1,1 +1,1 @@
-console.log('works');
+import './src/worker/index';

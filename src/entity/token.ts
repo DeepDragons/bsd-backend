@@ -33,29 +33,37 @@ export class Token {
     })
     strong!: number;
 
-    @CreateDateColumn()
+    @CreateDateColumn({
+      nullable: false
+    })
     createdDate: Date = new Date();
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({
+      nullable: false
+    })
     updatedDate: Date = new Date();
 
     @Column({
-      default: Buffer.alloc(16).toString('hex')
+      default: Buffer.alloc(32).toString('hex'),
+      nullable: false
     })
-    wounds: string = Buffer.alloc(16).toString('hex');
+    wounds: string = Buffer.alloc(32).toString('hex');
 
     @Column({
-      default: 0
+      default: 0,
+      nullable: false
     })
     won: number = 0;
 
     @Column({
-      default: 0
+      default: 0,
+      nullable: false
     })
     lost: number = 0;
 
     @Column({
-      default: false
+      default: false,
+      nullable: false
     })
     burnt: boolean = false;
 
@@ -63,4 +71,21 @@ export class Token {
       nullable: true
     })
     name?: string;
+
+
+    constructor(
+      id: number,
+      visual: string,
+      combat: string,
+      owner: string,
+      rarity: number,
+      strong: number
+    ) {
+      this.id = id;
+      this.visual = visual;
+      this.combat = combat;
+      this.owner = owner;
+      this.rarity = rarity;
+      this.strong = strong;
+    }
 }

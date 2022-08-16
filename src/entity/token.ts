@@ -1,4 +1,4 @@
-
+import { Buffer } from "buffer";
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
@@ -7,21 +7,45 @@ export class Token {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
+    @Column({
+      nullable: false
+    })
     visual!: string;
 
-    @Column()
+    @Column({
+      nullable: false
+    })
     combat!: string;
 
-    @Column()
-    name!: string;
+    @Column({
+      nullable: false
+    })
+    owner!: string;
+
+    @Column({
+      nullable: false
+    })
+    rarity!: number;
+
+    @Column({
+      nullable: false
+    })
+    strong!: number;
 
     @Column()
-    wounds!: string;
+    wounds = Buffer.alloc(32).toString('hex');
 
     @Column()
-    won!: string;
+    won = 0;
 
     @Column()
-    lost!: string;
+    lost = 0;
+
+    @Column()
+    burnt = false;
+
+    @Column({
+      nullable: true
+    })
+    name?: string;
 }

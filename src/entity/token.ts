@@ -1,5 +1,5 @@
 import { Buffer } from "buffer";
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity()
@@ -32,6 +32,12 @@ export class Token {
       nullable: false
     })
     strong!: number;
+
+    @CreateDateColumn()
+    createdDate: Date = new Date();
+
+    @UpdateDateColumn()
+    updatedDate: Date = new Date();
 
     @Column({
       default: Buffer.alloc(16).toString('hex')

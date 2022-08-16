@@ -6,12 +6,6 @@ export class Block {
     @PrimaryGeneratedColumn()
     blocknumber!: number;
 
-    @Column({
-      nullable: false,
-      unique: true
-    })
-    blockHash!: string;
-
     @CreateDateColumn({
       nullable: false
     })
@@ -23,8 +17,7 @@ export class Block {
     updatedDate: Date = new Date();
 
 
-    constructor(blocknumber: number, blockHash: string) {
+    constructor(blocknumber: number) {
       this.blocknumber = blocknumber;
-      this.blockHash = blockHash;
     }
 }

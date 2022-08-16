@@ -1,7 +1,7 @@
 
-import { AppDataSource } from "./data-source";
+import { orm } from "./data-source";
 
-AppDataSource.initialize().then(async () => {
+orm.initialize().then(async () => {
 
     // console.log("Inserting a new user into the database...")
     // const user = new User()

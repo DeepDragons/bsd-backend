@@ -44,6 +44,12 @@ export class Token {
     updatedDate: Date = new Date();
 
     @Column({
+      nullable: false,
+      default: 0
+    })
+    action!: number;
+
+    @Column({
       default: Buffer.alloc(32).toString('hex'),
       nullable: false
     })
@@ -78,6 +84,7 @@ export class Token {
       visual: string,
       combat: string,
       owner: string,
+      action: number,
       rarity: number,
       strong: number
     ) {
@@ -87,5 +94,6 @@ export class Token {
       this.owner = owner;
       this.rarity = rarity;
       this.strong = strong;
+      this.action = action;
     }
 }

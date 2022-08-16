@@ -1,1 +1,2 @@
-import './src/worker/index';
+// import './src/worker/index';
+import './src/index';

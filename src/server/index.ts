@@ -1,9 +1,14 @@
+import bunyan from 'bunyan';
 import Fastify from 'fastify';
 
 import { orm } from '../data-source';
 import { Token } from '../entity/token';
 
 
+const PORT = 3000;
+const log = bunyan.createLogger({
+  name: "REST-API-SERVER"
+});
 const fastify = Fastify({
   logger: false
 });
@@ -50,7 +55,7 @@ fastify.get<{
       count
     });
   } catch (err) {
-    console.log(err);
+    log.error('/tokens', err);
     reply.code(500).send((err as Error).message);
   }
 });
@@ -63,9 +68,10 @@ fastify.get('/ping', () => {
 (async function() {
   try {
     await orm.initialize();
-    await fastify.listen({ port: 3000 })
+    log.warn(`Run api server on port:${PORT}`);
+    await fastify.listen({ port: PORT });
   } catch (err) {
-    fastify.log.error(err)
-    process.exit(1)
+    log.error(err);
+    process.exit(1);
   }
 }());

@@ -15,11 +15,13 @@ import { parseGetDragons } from '../../lib/parse-res';
 import { sleep } from '../../lib/sleep';
 
 
-const provider = getRandomElement(NODES);
+let provider = getRandomElement(NODES);
 const web3 = new Web3(provider);
 const log = bunyan.createLogger({
   name: "MAIN-EVENTS"
 });
+
+log.warn('use provider:', provider);
 
 async function main() {
   const abi = JSON.parse(JSON.stringify(mainABI));
@@ -117,7 +119,7 @@ async function main() {
   const toBlock = (Number(lastblock) < fromBlock + BLOCK_RANGE) ?
     Number(lastblock) : fromBlock + BLOCK_RANGE;
 
-  log.info(`start fetch from blocknumber ${fromBlock} to blocknumber ${toBlock}`);
+  log.info(`start fetch from blocknumber ${fromBlock} to blocknumber ${toBlock}, last blocknumber is ${lastblock}`);
 
   const transferEventsList = await main.getPastEvents('Transfer', {
     fromBlock,
@@ -145,6 +147,9 @@ async function main() {
 
     await updateBlocks(fromBlock, toBlock);
   } catch (err) {
+    provider = getRandomElement(NODES);
+    log.warn('use provider:', provider);
+    web3.setProvider(provider);
     log.error(err);
   }
 };
@@ -160,6 +165,9 @@ async function main() {
     try {
       await main();
     } catch (err) {
+      provider = getRandomElement(NODES);
+      log.warn('use provider:', provider);
+      web3.setProvider(provider);
       log.error(err);
     }
   }

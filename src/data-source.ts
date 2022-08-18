@@ -6,7 +6,7 @@ import { Block } from "./entity/block";
 export const orm = new DataSource({
     database: 'dragons.sqlite3',
     type: 'sqlite',
-    synchronize: true,
+    synchronize: false,
     logging: false,
     entities: [Token, Block],
     migrations: [],

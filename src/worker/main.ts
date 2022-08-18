@@ -84,10 +84,28 @@ const log = bunyan.createLogger({
     await tokenRepo.save(tokens);
   }
 
+  async function updateBlocks(from: number, to: number) {
+    const newBlocks = [];
+
+    for (let index = from; index < to; index++) {
+      newBlocks.push(new Block(
+        index
+      ));
+    }
+
+    log.info(`created ${newBlocks.length} blocks`);
+
+    await blockRepo.save(newBlocks);
+  }
+
   const lastblock = await web3.eth.getBlockNumber();
-  let storedBlock = await blockRepo.findOneBy({});
+  let storedBlock = await blockRepo.findOne({
+    where: {},
+    order: { blocknumber: 'DESC' }
+  });
 
   if (Number(lastblock) === storedBlock?.blocknumber) {
+    log.info('state already updated');
     return;
   }
 
@@ -100,7 +118,8 @@ const log = bunyan.createLogger({
   const fromBlock = storedBlock.blocknumber;
   const toBlock = (Number(lastblock) < fromBlock + BLOCK_RANGE) ?
     Number(lastblock) : fromBlock + BLOCK_RANGE;
-  const newBlocks = [];
+
+  log.info(`start fetch from blocknumber ${fromBlock} to blocknumber ${toBlock}`);
 
   const transferEventsList = await main.getPastEvents('Transfer', {
     fromBlock,
@@ -110,6 +129,11 @@ const log = bunyan.createLogger({
   log.info(`got ${transferEventsList.length} new events`);
 
   if (transferEventsList.length === 0) {
+    try {
+      await updateBlocks(fromBlock, toBlock);
+    } catch (err) {
+      log.error('updateBlocks', err);
+    }
     return;
   }
 
@@ -121,15 +145,7 @@ const log = bunyan.createLogger({
     await createTokens(minted);
     await transferTokens(transfered);
 
-    for (let index = fromBlock; index < toBlock; index++) {
-      newBlocks.push(new Block(
-        index
-      ));
-    }
-
-    log.info(`created ${newBlocks.length} blocks`);
-
-    await blockRepo.save(newBlocks);
+    await updateBlocks(fromBlock, toBlock);
   } catch (err) {
     log.error(err);
   }

@@ -12,7 +12,7 @@ import { orm } from '../data-source';
 import { Block } from '../entity/block';
 import { Token } from '../entity/token';
 import { parseGetDragons } from '../../lib/parse-res';
-import { sleep } from '../../lib/sleep';
+// import { sleep } from '../../lib/sleep';
 
 
 let provider = getRandomElement(NODES);
@@ -160,7 +160,7 @@ async function main() {
 
   while(true) {
     log.info('run task');
-    await sleep(3000);
+    // await sleep(3000);
 
     try {
       await main();

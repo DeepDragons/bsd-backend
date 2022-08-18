@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { Token } from "./entity/Token";
+import { Token } from "./entity/token";
 import { Block } from "./entity/block";
 
 export const orm = new DataSource({

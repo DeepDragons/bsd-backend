@@ -1,4 +1,3 @@
-import { Buffer } from "buffer";
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 
@@ -50,12 +49,6 @@ export class Token {
     action!: number;
 
     @Column({
-      default: Buffer.alloc(32).toString('hex'),
-      nullable: false
-    })
-    wounds: string = Buffer.alloc(32).toString('hex');
-
-    @Column({
       default: 0,
       nullable: false
     })
@@ -86,7 +79,8 @@ export class Token {
       owner: string,
       action: number,
       rarity: number,
-      strong: number
+      strong: number,
+      name?: string
     ) {
       this.id = id;
       this.visual = visual;
@@ -95,5 +89,6 @@ export class Token {
       this.rarity = rarity;
       this.strong = strong;
       this.action = action;
+      this.name = name;
     }
 }

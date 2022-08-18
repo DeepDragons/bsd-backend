@@ -12,6 +12,7 @@ import { orm } from '../data-source';
 import { Block } from '../entity/block';
 import { Token } from '../entity/token';
 import { parseGetDragons } from '../../lib/parse-res';
+import { sleep } from '../../lib/sleep';
 
 
 const provider = getRandomElement(NODES);
@@ -20,10 +21,7 @@ const log = bunyan.createLogger({
   name: "MAIN-EVENTS"
 });
 
-
-(async function(){
-  await orm.initialize();
-
+async function main() {
   const abi = JSON.parse(JSON.stringify(mainABI));
   const main = new web3.eth.Contract(abi, Contracts.Main);
   const tokenRepo = orm.getRepository(Token);
@@ -148,5 +146,21 @@ const log = bunyan.createLogger({
     await updateBlocks(fromBlock, toBlock);
   } catch (err) {
     log.error(err);
+  }
+};
+
+
+(async function() {
+  await orm.initialize();
+
+  while(true) {
+    log.info('run task');
+    await sleep(3000);
+
+    try {
+      await main();
+    } catch (err) {
+      log.error(err);
+    }
   }
 }());
